@@ -57,18 +57,23 @@ class AlimentosController extends Controller
         $id = $request->input('alimento_id');
     
         try{
+            $alimento = Alimentos::find($id);
+            if (!$alimento) {
+                return response()->json(["message" => "Alimento não encontrado"], 404);
+            }
+
             $request->validate([
                 'nomeAlimento' => 'required|string|max:100',
                 'tipoAlimento' => 'required|string|max:50',
                 'quantidade' => 'required|integer',
             ]);
 
-            $alimento = Alimentos::find($id);
-            if (!$alimento) {
-                return response()->json(["message" => "Alimento não encontrado"], 404);
-            }
-
             $alimento->update($request->all());
+
+            return response()->json([
+                'message' => 'Alimento atualizado com sucesso',
+                'data'=> $alimento,
+            ],201);
 
         }catch(Exception $e) {
             return response()->json([

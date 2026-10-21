@@ -14,6 +14,9 @@ class ExampleTest extends TestCase
     {
         $response = $this->get('/');
 
-        $response->assertStatus(200);
+        $response->assertOk()
+            ->assertSee('Sua despensa, sempre sob controle.')
+            ->assertSee('bootstrap@5.3.3')
+            ->assertSee('Voltar ao início');
     }
 }
